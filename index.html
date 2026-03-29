@@ -1,155 +1,445 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="dark">
 <head>
-<title>Sankalp Sinha | Tech Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sankalp Sinha | Tech Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES FOR THEME TOGGLE --- */
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #1a1a1a;
+            --primary-color: #0078d4; /* Microsoft Blue for Light Mode */
+            --card-bg: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --nav-bg: rgba(255, 255, 255, 0.9);
+        }
 
-<style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:#0a0a0a;
-  color:white;
-  scroll-behavior:smooth;
-}
+        [data-theme="dark"] {
+            --bg-color: #0a0f16;
+            --text-color: #ffffff;
+            --primary-color: #00ffe7; /* Neon Cyan for Dark Mode */
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-shadow: 0 10px 30px rgba(0, 255, 231, 0.05);
+            --nav-bg: rgba(10, 15, 22, 0.9);
+        }
 
-/* NAVBAR */
-nav {
-  position:fixed;
-  width:100%;
-  background:rgba(0,0,0,0.8);
-  padding:15px;
-  text-align:center;
-  z-index:1000;
-}
-nav a {
-  color:#00ffe7;
-  margin:15px;
-  text-decoration:none;
-  font-weight:bold;
-}
-nav a:hover { color:white; }
+        /* --- GLOBAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-/* SECTIONS */
-section {
-  padding:100px 20px;
-  min-height:100vh;
-  text-align:center;
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor for custom one */
+        }
 
-/* HERO */
-#home {
-  background:linear-gradient(135deg,#000000,#0f2027);
-}
-h1 {
-  font-size:40px;
-  animation:glow 2s infinite alternate;
-}
-@keyframes glow {
-  from { text-shadow:0 0 10px #00ffe7; }
-  to { text-shadow:0 0 30px #00ffe7; }
-}
+        /* --- CUSTOM CURSOR --- */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary-color);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
 
-/* CARD */
-.card {
-  background:rgba(255,255,255,0.05);
-  padding:20px;
-  margin:20px;
-  border-radius:15px;
-  box-shadow:0 0 20px rgba(0,255,231,0.3);
-}
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(128,128,128,0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
 
-/* BUTTON */
-button {
-  padding:10px 20px;
-  background:#00ffe7;
-  border:none;
-  cursor:pointer;
-}
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
 
-/* CURSOR */
-.cursor {
-  width:15px;
-  height:15px;
-  background:#00ffe7;
-  position:fixed;
-  border-radius:50%;
-  pointer-events:none;
-}
-</style>
+        .nav-links a:hover::after { width: 100%; }
 
+        /* Theme Toggle Button */
+        #theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: none;
+        }
+
+        /* --- SECTIONS & LAYOUT --- */
+        section {
+            min-height: 100vh;
+            padding: 100px 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1.section-title {
+            font-size: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        h1.section-title span { color: var(--primary-color); }
+
+        /* --- HERO SECTION --- */
+        #home {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .hero-text { flex: 1; }
+        .hero-text h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        .hero-text h1 span {
+            color: var(--primary-color);
+            text-shadow: 0 0 20px rgba(0, 255, 231, 0.4);
+        }
+        .hero-text p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: gray;
+        }
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .hero-image img {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 231, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: #000;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: transparent;
+            color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        /* --- GRID CARDS (Skills & Blogs) --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(128,128,128,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 255, 231, 0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .card i {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* --- MEDIA SECTION (Automation/Video) --- */
+        .media-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .media-box {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .media-box img, .media-box video {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        /* --- CONTACT FORM --- */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            background: var(--card-bg);
+            border: 1px solid rgba(128,128,128,0.2);
+            color: var(--text-color);
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--primary-color);
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
-<nav>
-<a href="#home">Home</a>
-<a href="#blogs">Blogs</a>
-<a href="#automation">Automation</a>
-<a href="#community">Community</a>
-<a href="#contact">Contact</a>
-</nav>
+    <nav>
+        <a href="#home" class="logo">Sankalp.</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#skills">Expertise</a>
+            <a href="#blogs">Blogs</a>
+            <a href="#automation">Automation</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button id="theme-toggle"><i class="fas fa-sun"></i></button>
+    </nav>
 
-<!-- HOME -->
-<section id="home">
-<h1>👋 Welcome to My Tech World</h1>
+    <section id="home" class="animate-on-scroll">
+        <div class="hero-text">
+            <h1>👋 Hello, I'm <br><span>Sankalp Sinha</span></h1>
+            <p>With 5+ Years of Experience, I specialize in architecting, securing, and automating enterprise environments using the Microsoft ecosystem. From Cloud Identity to modern device management, I build systems that scale.</p>
+            <a href="#contact" class="btn">Let's Connect</a>
+            <a href="#skills" class="btn" style="background:transparent; color:var(--text-color); margin-left:15px;">Explore Work</a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=400&h=400" alt="Sankalp Sinha">
+        </div>
+    </section>
 
-<p><b>Sankalp Sinha</b></p>
+    <section id="skills" class="animate-on-scroll">
+        <h1 class="section-title">Core <span>Expertise</span></h1>
+        <div class="grid">
+            <div class="card">
+                <i class="fab fa-windows"></i>
+                <h3>Azure AD & Intune</h3>
+                <p>Identity access management, conditional access policies, and modern MDM/MAM deployment.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-server"></i>
+                <h3>Active Directory</h3>
+                <p>On-premise AD management, Group Policies, and seamless hybrid cloud synchronization.</p>
+            </div>
+            <div class="card">
+                <i class="fab fa-microsoft"></i>
+                <h3>Microsoft 365</h3>
+                <p>Administration, security compliance, Exchange Online, and Teams architecture.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-robot"></i>
+                <h3>Power Automate</h3>
+                <p>Building Copilot Studio bots and complex automated workflows to reduce manual IT overhead.</p>
+            </div>
+        </div>
+    </section>
 
-<p>5+ Years Experience in:</p>
+    <section id="automation" class="animate-on-scroll">
+        <h1 class="section-title">Workflow <span>Automation</span></h1>
+        <div class="media-container">
+            <div class="media-box">
+                <h3>PowerShell Scripting</h3>
+                <p>Automated user lifecycle management in hybrid environments.</p>
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600&h=350" alt="Code Gif Placeholder">
+            </div>
+            <div class="media-box">
+                <h3>Power Automate Approvals</h3>
+                <p>See how I streamline IT ticket approvals automatically.</p>
+                <video controls muted loop>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<p>⚡ Azure AD</p>
-<p>⚡ Active Directory</p>
-<p>⚡ Intune</p>
-<p>⚡ Microsoft 365</p>
-<p>⚡ Power Automate & Copilot Studio</p>
-</div>
-</section>
+    <section id="blogs" class="animate-on-scroll">
+        <h1 class="section-title">Latest <span>Insights</span></h1>
+        <div class="grid">
+            <div class="card">
+                <h3>Azure AD Sync Issue Fix</h3>
+                <p>A deep dive into resolving common AAD Connect synchronization anchor errors.</p>
+                <br>
+                <a href="#" style="color:var(--primary-color);">Read More ➔</a>
+            </div>
+            <div class="card">
+                <h3>Intune Enrollment Error</h3>
+                <p>Troubleshooting Windows Autopilot and device compliance policy conflicts.</p>
+                <br>
+                <a href="#" style="color:var(--primary-color);">Read More ➔</a>
+            </div>
+            <div class="card">
+                <h3>M365 Login Troubleshooting</h3>
+                <p>How to track sign-in logs and resolve MFA loop issues effectively.</p>
+                <br>
+                <a href="#" style="color:var(--primary-color);">Read More ➔</a>
+            </div>
+        </div>
+    </section>
 
-<!-- BLOGS -->
-<section id="blogs">
-<h1>📝 Blogs</h1>
+    <section id="contact" class="animate-on-scroll">
+        <h1 class="section-title">Get in <span>Touch</span></h1>
+        <form onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea rows="5" placeholder="How can I help you?" required></textarea>
+            <button type="submit" class="btn" style="cursor:none;">Send Message</button>
+        </form>
+        <p style="text-align: center; margin-top: 30px; color: gray;">
+            <i class="fas fa-envelope"></i> sinha.sankalp@hotmail.com
+        </p>
+    </section>
 
-<div class="card">Azure AD Sync Issue Fix</div>
-<div class="card">Intune Enrollment Error</div>
-<div class="card">M365 Login Troubleshooting</div>
-</section>
+    <script>
+        // --- 1. THEME TOGGLE LOGIC ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
 
-<!-- AUTOMATION -->
-<section id="automation">
-<h1>⚙️ Automation Scripts</h1>
+        themeToggle.addEventListener('click', () => {
+            if (htmlElement.getAttribute('data-theme') === 'dark') {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        });
 
-<div class="card">PowerShell User Creation</div>
-<div class="card">Power Automate Approval Flow</div>
+        // --- 2. CUSTOM CURSOR LOGIC ---
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
 
-<p>GitHub: <a href="#" style="color:#00ffe7;">Add Link</a></p>
-</section>
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
 
-<!-- COMMUNITY -->
-<section id="community">
-<h1>💬 Community</h1>
+            // Dot follows instantly
+            dot.style.left = `${posX}px`;
+            dot.style.top = `${posY}px`;
 
-<textarea rows="5" cols="40" placeholder="Ask your question..."></textarea><br><br>
-<button>Submit</button>
-</section>
+            // Outline follows with slight delay via CSS animation
+            outline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
 
-<!-- CONTACT -->
-<section id="contact">
-<h1>📧 Contact</h1>
+        // Add hover effect to clickable elements
+        const clickables = document.querySelectorAll('a, button, input, textarea');
+        clickables.forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                outline.style.width = '60px';
+                outline.style.height = '60px';
+                outline.style.backgroundColor = 'rgba(0, 255, 231, 0.1)';
+            });
+            elem.addEventListener('mouseleave', () => {
+                outline.style.width = '40px';
+                outline.style.height = '40px';
+                outline.style.backgroundColor = 'transparent';
+            });
+        });
 
-<p>Sankalp Sinha</p>
-<p>Email: sinha.sankalp@hotmail.com</p>
-</section>
+        // --- 3. SCROLL ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 }); // Triggers when 10% of the section is visible
 
-<script>
-const cursor = document.getElementById("cursor");
-document.addEventListener("mousemove", e => {
-cursor.style.left = e.pageX + "px";
-cursor.style.top = e.pageY + "px";
-});
-</script>
-
+        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
