@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Sankalp Sinha</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Paste the identical CORE STYLES here */
+        :root { --bg-color: #f0f2f5; --text-color: #1a1a1a; --accent-color: #0078d4; --card-bg: #ffffff; --nav-bg: rgba(255, 255, 255, 0.8); }
+        [data-theme="dark"] { --bg-color: #050810; --text-color: #ffffff; --accent-color: #915eff; --card-bg: #151030; --nav-bg: rgba(5, 8, 16, 0.8); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-top: 100px; }
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: var(--nav-bg); backdrop-filter: blur(10px); z-index: 1000; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 10px;}
+        .logo span { background: var(--accent-color); padding: 5px 10px; border-radius: 50%; color: white;}
+        .nav-links a { color: var(--text-color); text-decoration: none; margin: 0 15px; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent-color); }
+        .active-link { color: var(--accent-color) !important; border-bottom: 2px solid var(--accent-color); }
+        #theme-toggle { background: none; border: none; color: var(--text-color); font-size: 20px; cursor: pointer; }
+
+        /* FORM STYLES */
+        .contact-container { max-width: 600px; margin: 50px auto; padding: 40px; background: var(--card-bg); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 15px; margin-bottom: 20px; background: var(--bg-color); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); border-radius: 10px; font-size: 16px; outline: none; }
+        input:focus, textarea:focus { border-color: var(--accent-color); }
+        button { padding: 15px; background: var(--accent-color); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; transition: 0.3s; }
+        button:hover { opacity: 0.8; box-shadow: 0 0 15px var(--accent-color); }
+        .contact-info { text-align: center; margin-top: 30px; }
+        .contact-info i { color: var(--accent-color); margin-right: 10px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo"><span>S</span> Sankalp</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="experience.html">Experience</a>
+            <a href="projects.html">Projects</a>
+            <a href="contact.html" class="active-link">Contact</a>
+        </div>
+        <button id="theme-toggle"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <div class="contact-container">
+        <h1 style="text-align:center; font-size: 36px; margin-bottom: 30px;">Let's <span style="color:var(--accent-color);">Connect</span></h1>
+        
+    <form action="https://formspree.io/f/xvzvkaga" method="POST">
+    <input type="text" name="name" placeholder="Your Full Name" required>
+    <input type="email" name="email" placeholder="Your Email Address" required>
+    <textarea name="message" rows="6" placeholder="How can I help you?" required></textarea>
+    
+    <button type="submit">Send Message</button>
+    </form>
+
+        <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> sinha.sankalp@hotmail.com</p>
+            <p style="margin-top: 10px;"><i class="fab fa-linkedin"></i> <a href="#" style="color:var(--text-color); text-decoration:none;">LinkedIn Profile</a></p>
+        </div>
+        </div>
+
+    <script>
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        });
+    </script>
+</body>
+</html>
