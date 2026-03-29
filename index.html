@@ -3,442 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sankalp Sinha | Tech Portfolio</title>
+    <title>Sankalp Sinha | EUC Administrator</title>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+
     <style>
-        /* --- CSS VARIABLES FOR THEME TOGGLE --- */
+        /* =========================================
+           CSS VARIABLES (THEME COLORS)
+           ========================================= */
         :root {
-            --bg-color: #f4f7f6;
+            --bg-color: #050816; /* Deep space black */
+            --text-color: #ffffff;
+            --text-secondary: #dfd9ff;
+            --accent-color: #915eff; /* Akash-style Purple */
+            --card-bg: rgba(21, 16, 48, 0.85);
+            --nav-bg: rgba(5, 8, 22, 0.9);
+        }
+
+        /* Light Mode Overrides */
+        [data-theme="light"] {
+            --bg-color: #f3f3f3;
             --text-color: #1a1a1a;
-            --primary-color: #0078d4; /* Microsoft Blue for Light Mode */
-            --card-bg: #ffffff;
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --text-secondary: #4a4a4a;
+            --accent-color: #0078d4; /* Microsoft Blue */
+            --card-bg: rgba(255, 255, 255, 0.9);
             --nav-bg: rgba(255, 255, 255, 0.9);
         }
 
-        [data-theme="dark"] {
-            --bg-color: #0a0f16;
-            --text-color: #ffffff;
-            --primary-color: #00ffe7; /* Neon Cyan for Dark Mode */
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-shadow: 0 10px 30px rgba(0, 255, 231, 0.05);
-            --nav-bg: rgba(10, 15, 22, 0.9);
-        }
+        /* Reset all default margins so the site fits the screen perfectly */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background-color 0.3s, color 0.3s; cursor: none; }
+        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        /* --- GLOBAL STYLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+        /* Forces the 3D background behind everything else */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            cursor: none; /* Hide default cursor for custom one */
-        }
+        /* =========================================
+           CUSTOM CURSOR
+           ========================================= */
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--accent-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--accent-color); }
+        .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--accent-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.15s, height 0.15s; }
 
-        /* --- CUSTOM CURSOR --- */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary-color);
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--primary-color);
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
+        /* =========================================
+           NAVIGATION BAR
+           ========================================= */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; align-items: center; justify-content: center; background: var(--nav-bg); backdrop-filter: blur(10px); z-index: 1000; }
+        .logo { position: absolute; left: 50px; font-size: 22px; font-weight: 700; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--accent-color); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 16px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-color); }
+        .active-link { color: var(--text-color) !important; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; }
+        #theme-toggle { position: absolute; right: 50px; background: none; border: none; color: var(--text-color); font-size: 22px; }
 
-        /* --- NAVBAR --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(128,128,128,0.1);
-        }
+        /* =========================================
+           HERO SECTION (TOP VIEWPORT)
+           ========================================= */
+        .hero { min-height: 100vh; padding: 120px 10% 50px 10%; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
+        .hero-layout { display: flex; justify-content: space-between; align-items: center; gap: 50px; }
         
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
+        /* Left Side (Text and Line) */
+        .hero-left { display: flex; gap: 20px; flex: 1.2; }
+        .line-container { display: flex; flex-direction: column; align-items: center; margin-top: 15px; }
+        .dot { width: 18px; height: 18px; border-radius: 50%; background-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
+        .line { width: 4px; height: 350px; background: linear-gradient(to bottom, var(--accent-color), transparent); margin-top: -2px; }
 
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 500;
-            position: relative;
-        }
+        .hero-text h1 { font-size: 65px; font-weight: 900; line-height: 1.1; margin-bottom: 15px; }
+        .hero-text h1 span { color: var(--accent-color); }
+        .hero-text p { font-size: 24px; font-weight: 400; color: var(--text-secondary); line-height: 1.5; margin-bottom: 40px; }
+
+        /* Track Boxes (Clickable Cards) */
+        .track-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .track-box { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; transform-style: preserve-3d; box-shadow: 0 10px 20px rgba(0,0,0,0.2); backdrop-filter: blur(10px); transition: 0.3s; }
+        .track-box:hover { border-color: var(--accent-color); box-shadow: 0 0 20px rgba(145, 94, 255, 0.4); }
+        .track-box h3 { color: var(--accent-color); font-size: 16px; margin-bottom: 5px; transform: translateZ(20px); }
+        .track-box p { font-size: 13px; color: var(--text-secondary); margin: 0; transform: translateZ(10px); line-height: 1.4; }
+
+        /* Right Side (3D Model Container) */
+        .hero-right { flex: 0.8; display: flex; justify-content: center; align-items: center; }
         
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--primary-color);
-            transition: width 0.3s;
+        /* =========================================
+           NEW: CERTIFICATIONS BANNER
+           ========================================= */
+        .cert-banner {
+            width: 100%; background: var(--card-bg); padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;
         }
+        .cert-item { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: var(--text-secondary); }
+        .cert-item i { color: var(--accent-color); font-size: 20px; }
 
-        .nav-links a:hover::after { width: 100%; }
+        /* =========================================
+           NEW: ABOUT ME SECTION
+           ========================================= */
+        .about-section { max-width: 1000px; margin: 0 auto 100px auto; padding: 0 10%; text-align: center; }
+        .about-section h2 { font-size: 40px; margin-bottom: 20px; }
+        .about-section h2 span { color: var(--accent-color); }
+        .about-section p { font-size: 18px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 20px;}
 
-        /* Theme Toggle Button */
-        #theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 20px;
-            cursor: none;
-        }
+        /* Floating Resume Button */
+        .resume-btn { position: fixed; bottom: 40px; right: 40px; background: var(--accent-color); color: #fff; padding: 15px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s transform, 0.3s box-shadow; }
+        .resume-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(145, 94, 255, 0.5); }
 
-        /* --- SECTIONS & LAYOUT --- */
-        section {
-            min-height: 100vh;
-            padding: 100px 10%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-        
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Popup Modal Styles */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+        .modal-content { background: var(--card-bg); margin: auto; padding: 40px; border: 1px solid var(--accent-color); width: 90%; max-width: 600px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); color: var(--text-color); position: relative; animation: modalFadeIn 0.3s; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .close-btn { color: var(--text-secondary); float: right; font-size: 28px; font-weight: bold; position: absolute; top: 20px; right: 25px; }
+        .close-btn:hover { color: var(--accent-color); }
+        .modal-content h2 { color: var(--accent-color); margin-bottom: 20px; font-size: 28px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px;}
+        .modal-section { margin-bottom: 20px; }
+        .modal-section h4 { font-size: 18px; margin-bottom: 8px; color: #fff; }
+        [data-theme="light"] .modal-section h4 { color: #000; }
+        .modal-section ul { margin-left: 20px; color: var(--text-secondary); line-height: 1.6; font-size: 14px;}
+        .modal-section p { color: var(--text-secondary); font-size: 14px; line-height: 1.6;}
+        .ms-link { display: inline-block; margin-top: 10px; padding: 10px 20px; background: rgba(0, 120, 212, 0.2); color: var(--accent-color); text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; border: 1px solid var(--accent-color); }
+        .ms-link:hover { background: var(--accent-color); color: #fff; }
 
-        h1.section-title {
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        h1.section-title span { color: var(--primary-color); }
-
-        /* --- HERO SECTION --- */
-        #home {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .hero-text { flex: 1; }
-        .hero-text h1 {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-        .hero-text h1 span {
-            color: var(--primary-color);
-            text-shadow: 0 0 20px rgba(0, 255, 231, 0.4);
-        }
-        .hero-text p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: gray;
-        }
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-        .hero-image img {
-            width: 350px;
-            height: 350px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(0, 255, 231, 0.2);
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: var(--primary-color);
-            color: #000;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            border: 2px solid var(--primary-color);
-            transition: all 0.3s;
-        }
-        .btn:hover {
-            background: transparent;
-            color: var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-color);
-        }
-
-        /* --- GRID CARDS (Skills & Blogs) --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(128,128,128,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 255, 231, 0.15);
-            border-color: var(--primary-color);
-        }
-        
-        .card i {
-            font-size: 40px;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        /* --- MEDIA SECTION (Automation/Video) --- */
-        .media-container {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-        .media-box {
-            flex: 1;
-            min-width: 300px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-        .media-box img, .media-box video {
-            width: 100%;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-
-        /* --- CONTACT FORM --- */
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            background: var(--card-bg);
-            border: 1px solid rgba(128,128,128,0.2);
-            color: var(--text-color);
-            border-radius: 8px;
-            outline: none;
-        }
-        input:focus, textarea:focus {
-            border-color: var(--primary-color);
-        }
+        @media(max-width: 1024px) { .hero-layout { flex-direction: column; text-align: left; } .resume-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 14px; } }
     </style>
 </head>
 <body>
+
+    <canvas id="bg-canvas"></canvas>
 
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
     <nav>
-        <a href="#home" class="logo">Sankalp.</a>
+        <a href="index.html" class="logo"><span>S</span> Sankalp</a>
         <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#skills">Expertise</a>
-            <a href="#blogs">Blogs</a>
-            <a href="#automation">Automation</a>
-            <a href="#contact">Contact</a>
+            <a href="index.html" class="active-link">Home</a>
+            <a href="experience.html">Experience</a>
+            <a href="projects.html">Projects</a>
+            <a href="contact.html">Contact</a>
         </div>
         <button id="theme-toggle"><i class="fas fa-sun"></i></button>
     </nav>
 
-    <section id="home" class="animate-on-scroll">
-        <div class="hero-text">
-            <h1>👋 Hello, I'm <br><span>Sankalp Sinha</span></h1>
-            <p>With 5+ Years of Experience, I specialize in architecting, securing, and automating enterprise environments using the Microsoft ecosystem. From Cloud Identity to modern device management, I build systems that scale.</p>
-            <a href="#contact" class="btn">Let's Connect</a>
-            <a href="#skills" class="btn" style="background:transparent; color:var(--text-color); margin-left:15px;">Explore Work</a>
-        </div>
-        <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=400&h=400" alt="Sankalp Sinha">
+    <section class="hero">
+        <div class="hero-layout">
+            
+            <div class="hero-left">
+                <div class="line-container">
+                    <div class="dot"></div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="hero-text">
+                    <h1>Hi, I'm <span>Sankalp</span></h1>
+                    <p>I architect, secure, and automate <br class="sm:block hidden" />enterprise infrastructure.</p>
+                    
+                    <div class="track-grid">
+                        <div class="track-box" data-tilt data-tilt-max="15" data-tilt-speed="400" data-target="iam">
+                            <h3><i class="fas fa-cloud"></i> Cloud Identity</h3>
+                            <p>Azure AD migration, SSO, MFA, and Conditional Access. Click to view.</p>
+                        </div>
+                        <div class="track-box" data-tilt data-tilt-max="15" data-tilt-speed="400" data-target="automation">
+                            <h3><i class="fas fa-robot"></i> Automation & AI</h3>
+                            <p>Power Automate, Copilot bots, and PowerShell scaling. Click to view.</p>
+                        </div>
+                        <div class="track-box" data-tilt data-tilt-max="15" data-tilt-speed="400" data-target="endpoint">
+                            <h3><i class="fas fa-shield-alt"></i> Endpoint Security</h3>
+                            <p>Intune compliance, Windows Autopilot, and MDM. Click to view.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <model-viewer
+                    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                    alt="A 3D model of Sankalp"
+                    auto-rotate
+                    camera-controls
+                    disable-zoom
+                    shadow-intensity="1"
+                    style="width: 100%; height: 500px; filter: drop-shadow(0 20px 30px rgba(145, 94, 255, 0.2));">
+                </model-viewer>
+            </div>
+
         </div>
     </section>
 
-    <section id="skills" class="animate-on-scroll">
-        <h1 class="section-title">Core <span>Expertise</span></h1>
-        <div class="grid">
-            <div class="card">
-                <i class="fab fa-windows"></i>
-                <h3>Azure AD & Intune</h3>
-                <p>Identity access management, conditional access policies, and modern MDM/MAM deployment.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-server"></i>
-                <h3>Active Directory</h3>
-                <p>On-premise AD management, Group Policies, and seamless hybrid cloud synchronization.</p>
-            </div>
-            <div class="card">
-                <i class="fab fa-microsoft"></i>
-                <h3>Microsoft 365</h3>
-                <p>Administration, security compliance, Exchange Online, and Teams architecture.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-robot"></i>
-                <h3>Power Automate</h3>
-                <p>Building Copilot Studio bots and complex automated workflows to reduce manual IT overhead.</p>
-            </div>
-        </div>
+    <div class="cert-banner">
+        <div class="cert-item"><i class="fas fa-award"></i> M365 Administrator Expert</div>
+        <div class="cert-item"><i class="fas fa-award"></i> M365 Endpoint Administrator</div>
+        <div class="cert-item"><i class="fas fa-award"></i> Azure Administrator Associate</div>
+        <div class="cert-item"><i class="fas fa-award"></i> Identity & Access Administrator</div>
+    </div>
+
+    <section class="about-section">
+        <h2>About <span>Me</span></h2>
+        <p>I am a Results-driven EUC Administrator with over 5 years of experience managing Microsoft ecosystems. I specialize in shifting organizations from legacy on-premises environments into secure, scalable, cloud-first infrastructure.</p>
+        <p>Whether it's managing 30,000+ users in Azure AD, enforcing strict compliance across 20,000+ Intune devices, or writing heavy PowerShell scripts to eliminate manual IT tickets, I build systems that work intelligently.</p>
     </section>
 
-    <section id="automation" class="animate-on-scroll">
-        <h1 class="section-title">Workflow <span>Automation</span></h1>
-        <div class="media-container">
-            <div class="media-box">
-                <h3>PowerShell Scripting</h3>
-                <p>Automated user lifecycle management in hybrid environments.</p>
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600&h=350" alt="Code Gif Placeholder">
-            </div>
-            <div class="media-box">
-                <h3>Power Automate Approvals</h3>
-                <p>See how I streamline IT ticket approvals automatically.</p>
-                <video controls muted loop>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                    Your browser does not support HTML video.
-                </video>
-            </div>
-        </div>
-    </section>
+    <a href="Resume - Sankalp Sinha.pdf" download="Sankalp_Sinha_Resume.pdf" class="resume-btn" id="resume-btn">
+        <i class="fas fa-file-pdf"></i> Download Resume
+    </a>
 
-    <section id="blogs" class="animate-on-scroll">
-        <h1 class="section-title">Latest <span>Insights</span></h1>
-        <div class="grid">
-            <div class="card">
-                <h3>Azure AD Sync Issue Fix</h3>
-                <p>A deep dive into resolving common AAD Connect synchronization anchor errors.</p>
-                <br>
-                <a href="#" style="color:var(--primary-color);">Read More ➔</a>
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title">Track Title</h2>
+            
+            <div class="modal-section">
+                <h4><i class="fas fa-check-circle" style="color:var(--accent-color);"></i> What I Have Done</h4>
+                <div id="modal-done"></div>
             </div>
-            <div class="card">
-                <h3>Intune Enrollment Error</h3>
-                <p>Troubleshooting Windows Autopilot and device compliance policy conflicts.</p>
-                <br>
-                <a href="#" style="color:var(--primary-color);">Read More ➔</a>
+            
+            <div class="modal-section">
+                <h4><i class="fas fa-book-reader" style="color:var(--accent-color);"></i> How to Learn This</h4>
+                <p id="modal-learn"></p>
             </div>
-            <div class="card">
-                <h3>M365 Login Troubleshooting</h3>
-                <p>How to track sign-in logs and resolve MFA loop issues effectively.</p>
-                <br>
-                <a href="#" style="color:var(--primary-color);">Read More ➔</a>
-            </div>
-        </div>
-    </section>
 
-    <section id="contact" class="animate-on-scroll">
-        <h1 class="section-title">Get in <span>Touch</span></h1>
-        <form onsubmit="event.preventDefault(); alert('Message sent successfully!');">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea rows="5" placeholder="How can I help you?" required></textarea>
-            <button type="submit" class="btn" style="cursor:none;">Send Message</button>
-        </form>
-        <p style="text-align: center; margin-top: 30px; color: gray;">
-            <i class="fas fa-envelope"></i> sinha.sankalp@hotmail.com
-        </p>
-    </section>
+            <a href="#" target="_blank" id="modal-link" class="ms-link"><i class="fab fa-microsoft"></i> Official Microsoft Docs</a>
+        </div>
+    </div>
 
     <script>
-        // --- 1. THEME TOGGLE LOGIC ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
-        const themeIcon = themeToggle.querySelector('i');
-
-        themeToggle.addEventListener('click', () => {
-            if (htmlElement.getAttribute('data-theme') === 'dark') {
-                htmlElement.setAttribute('data-theme', 'light');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            } else {
-                htmlElement.setAttribute('data-theme', 'dark');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+        // --- MODAL DATA & LOGIC ---
+        const trackData = {
+            iam: {
+                title: "Cloud Identity (IAM)",
+                done: "<ul><li>Led migration from on-premises Active Directory to Azure AD for 30,000+ users.</li><li>Implemented Conditional Access, MFA, and Sign-in Risk Policies across enterprise.</li><li>Integrated FortiGate and Adobe with Azure AD using SAML and OAuth.</li></ul>",
+                learn: "Start with Entra ID (Azure AD) fundamentals. Practice syncing local AD to cloud, configuring SSO for Enterprise Applications, and writing strict Conditional Access policies to secure user logins.",
+                link: "https://learn.microsoft.com/en-us/entra/identity/"
+            },
+            automation: {
+                title: "Automation & AI",
+                done: "<ul><li>Designed AI-powered chatbots using Copilot Studio and Power Automate, reducing manual workload by 84%.</li><li>Automated user lifecycle management, license assignment, and device registration.</li><li>Developed complex PowerShell scripts for logon tracking, AD cleanup, and device reporting.</li></ul>",
+                learn: "Learn PowerShell scripting to interact with the Microsoft Graph API. Explore Power Automate to build approval flows, and Copilot Studio to design logic-based AI chatbots for IT support.",
+                link: "https://learn.microsoft.com/en-us/power-automate/"
+            },
+            endpoint: {
+                title: "Endpoint Security",
+                done: "<ul><li>Administered Intune Endpoint Security policies including LAPS, BitLocker, and Windows Hello for Business.</li><li>Achieved 88% compliance across 20,000+ Intune-managed devices.</li><li>Deployed Windows Autopilot (Offline Domain Join) for zero-touch provisioning.</li></ul>",
+                learn: "Master Microsoft Intune. Understand Mobile Device Management (MDM), setup Windows Autopilot deployment profiles, and create compliance policies to secure remote devices.",
+                link: "https://learn.microsoft.com/en-us/mem/intune/"
             }
+        };
+
+        const modal = document.getElementById("infoModal");
+        const span = document.getElementsByClassName("close-btn")[0];
+        
+        document.querySelectorAll('.track-box').forEach(box => {
+            box.addEventListener('click', function() {
+                const targetKey = this.getAttribute('data-target');
+                const data = trackData[targetKey];
+                
+                document.getElementById('modal-title').innerText = data.title;
+                document.getElementById('modal-done').innerHTML = data.done;
+                document.getElementById('modal-learn').innerText = data.learn;
+                document.getElementById('modal-link').href = data.link;
+                
+                modal.style.display = "flex";
+            });
         });
 
-        // --- 2. CUSTOM CURSOR LOGIC ---
+        span.onclick = function() { modal.style.display = "none"; }
+        window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+
+        // --- CUSTOM CURSOR LOGIC ---
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
 
         window.addEventListener('mousemove', (e) => {
             const posX = e.clientX;
             const posY = e.clientY;
-
-            // Dot follows instantly
             dot.style.left = `${posX}px`;
             dot.style.top = `${posY}px`;
-
-            // Outline follows with slight delay via CSS animation
-            outline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
+            outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 200, fill: "forwards" });
         });
 
-        // Add hover effect to clickable elements
-        const clickables = document.querySelectorAll('a, button, input, textarea');
-        clickables.forEach(elem => {
-            elem.addEventListener('mouseenter', () => {
+        document.querySelectorAll('a, button, .track-box, .close-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => {
                 outline.style.width = '60px';
                 outline.style.height = '60px';
-                outline.style.backgroundColor = 'rgba(0, 255, 231, 0.1)';
+                outline.style.backgroundColor = 'rgba(145, 94, 255, 0.1)';
             });
-            elem.addEventListener('mouseleave', () => {
+            el.addEventListener('mouseleave', () => {
                 outline.style.width = '40px';
                 outline.style.height = '40px';
                 outline.style.backgroundColor = 'transparent';
             });
         });
 
-        // --- 3. SCROLL ANIMATIONS ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 }); // Triggers when 10% of the section is visible
+        // --- THEME PERSISTENCE LOGIC ---
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
-        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-            observer.observe(el);
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            update3DColors(newTheme); 
+        });
+
+        // --- INITIATE 3D TILT CARDS ---
+        VanillaTilt.init(document.querySelectorAll(".track-box"));
+
+        // --- THREE.JS 3D BACKGROUND ---
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const geometry = new THREE.BufferGeometry();
+        const particlesCount = 800;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        let material = new THREE.PointsMaterial({
+            size: 0.015,
+            color: savedTheme === 'dark' ? 0x915eff : 0x0078d4, 
+            transparent: true, opacity: 0.6
+        });
+
+        const particlesMesh = new THREE.Points(geometry, material);
+        scene.add(particlesMesh);
+        camera.position.z = 3;
+
+        function update3DColors(theme) { material.color.setHex(theme === 'dark' ? 0x915eff : 0x0078d4); }
+
+        let mouseX = 0; let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX / window.innerWidth - 0.5;
+            mouseY = event.clientY / window.innerHeight - 0.5;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.0005; particlesMesh.rotation.x += 0.0002;
+            particlesMesh.rotation.y += mouseX * 0.005; particlesMesh.rotation.x += mouseY * 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
