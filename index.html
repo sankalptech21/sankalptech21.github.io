@@ -45,20 +45,32 @@
 
         /* --- NAVBAR --- */
         nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; align-items: center; justify-content: center; background: var(--nav-bg); backdrop-filter: blur(10px); z-index: 1000; }
-        .logo { position: absolute; left: 50px; font-size: 22px; font-weight: 700; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo { position: absolute; left: 50px; font-size: 22px; font-weight: 700; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 10px; z-index: 1001; }
         .logo span { color: var(--accent-color); }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 16px; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--text-color); }
         .active-link { color: var(--text-color) !important; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; }
-        #theme-toggle { position: absolute; right: 50px; background: none; border: none; color: var(--text-color); font-size: 22px; cursor: pointer; }
+        
+        #theme-toggle { position: absolute; right: 50px; background: none; border: none; color: var(--text-color); font-size: 22px; cursor: pointer; z-index: 1001; }
+        
+        .hamburger { display: none; background: none; border: none; color: var(--text-color); font-size: 24px; cursor: pointer; position: absolute; right: 90px; z-index: 1001; }
 
         /* Mobile Nav Adjustments */
         @media (max-width: 768px) {
-            nav { padding: 15px 20px; justify-content: flex-end; }
+            nav { padding: 15px 20px; justify-content: space-between; }
             .logo { left: 20px; font-size: 18px; }
-            .nav-links { display: none; /* Consider adding a hamburger menu for full mobile support later */ }
             #theme-toggle { right: 20px; }
+            .hamburger { display: block; right: 65px; }
+            
+            .nav-links {
+                position: absolute; top: 100%; left: 0; width: 100%;
+                background: var(--nav-bg); backdrop-filter: blur(15px);
+                flex-direction: column; align-items: center; padding: 20px 0; gap: 20px;
+                transform: translateY(-150%); opacity: 0; transition: 0.4s ease-in-out; pointer-events: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+            .nav-links.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
         }
 
         /* --- HERO SECTION --- */
@@ -87,14 +99,14 @@
         /* Mobile & Tablet Hero Adjustments */
         @media (max-width: 1024px) {
             .hero-layout { flex-direction: column; text-align: left; }
-            .hero-right { order: -1; margin-bottom: 30px; } /* Move model above text on smaller screens */
-            .line-container { display: none; } /* Hide line on tablet/mobile for cleaner layout */
+            .hero-right { order: -1; margin-bottom: 30px; } 
+            .line-container { display: none; } 
         }
         @media (max-width: 768px) {
             .hero { padding: 100px 5% 50px 5%; }
             .hero-text h1 { font-size: 45px; }
             .hero-text p { font-size: 18px; margin-bottom: 30px; }
-            .track-grid { grid-template-columns: 1fr; } /* Single column tracks on mobile */
+            .track-grid { grid-template-columns: 1fr; } 
             model-viewer { height: 350px !important; }
         }
 
@@ -113,30 +125,57 @@
         /* Floating Resume Button */
         .resume-btn { position: fixed; bottom: 40px; right: 40px; background: var(--accent-color); color: #fff; padding: 15px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s transform, 0.3s box-shadow; }
         .resume-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(145, 94, 255, 0.5); }
-        @media (max-width: 768px) { .resume-btn { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 14px; } }
+        @media (max-width: 768px) { .resume-btn { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 14px; z-index: 999; } }
 
-        /* Popup Modal Styles & Effects */
+        /* --- POPUP MODAL STYLES & EFFECTS --- */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--card-bg); margin: auto; padding: 40px; border: 1px solid var(--accent-color); width: 100%; max-width: 650px; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); color: var(--text-color); position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
+        /* Updated for better mobile scrolling and sizing */
+        .modal-content { 
+            background: var(--card-bg); margin: auto; padding: 40px; border: 1px solid var(--accent-color); 
+            width: 100%; max-width: 650px; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); 
+            color: var(--text-color); position: relative; 
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh; /* Limits height to 90% of screen */
+            overflow-y: auto; /* Adds scrollbar if content is too long */
+        }
+        
+        /* Custom scrollbar for the modal */
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+
         @keyframes modalPop { 
             from { opacity: 0; transform: scale(0.8) translateY(20px); } 
             to { opacity: 1; transform: scale(1) translateY(0); } 
         }
 
-        .close-btn { color: var(--text-secondary); float: right; font-size: 28px; font-weight: bold; position: absolute; top: 20px; right: 25px; cursor: pointer; transition: 0.2s; }
+        .close-btn { color: var(--text-secondary); float: right; font-size: 32px; font-weight: bold; position: absolute; top: 20px; right: 25px; cursor: pointer; transition: 0.2s; line-height: 1; }
         .close-btn:hover { color: var(--accent-color); transform: rotate(90deg); }
-        .modal-content h2 { color: var(--accent-color); margin-bottom: 20px; font-size: 28px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px;}
+        
+        .modal-content h2 { color: var(--accent-color); margin-bottom: 20px; font-size: 28px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; padding-right: 30px; }
         .modal-section { margin-bottom: 20px; }
         .modal-section h4 { font-size: 18px; margin-bottom: 12px; color: #fff; display: flex; align-items: center; gap: 8px; }
         [data-theme="light"] .modal-section h4 { color: #000; }
         .modal-section ul { margin-left: 20px; color: var(--text-secondary); line-height: 1.6; font-size: 15px; }
-        .modal-section li { margin-bottom: 8px; }
+        .modal-section li { margin-bottom: 10px; }
         .modal-section p { color: var(--text-secondary); font-size: 15px; line-height: 1.6;}
-        .ms-link { display: inline-block; margin-top: 15px; padding: 12px 24px; background: rgba(0, 120, 212, 0.2); color: var(--accent-color); text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; border: 1px solid var(--accent-color); transition: 0.3s; }
+        
+        .ms-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 12px 24px; background: rgba(0, 120, 212, 0.2); color: var(--accent-color); text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; border: 1px solid var(--accent-color); transition: 0.3s; }
         .ms-link:hover { background: var(--accent-color); color: #fff; transform: translateY(-2px); }
 
-        @media (max-width: 768px) { .modal-content { padding: 30px 20px; } .modal-content h2 { font-size: 24px; } }
+        /* Modal Mobile Specific Adjustments */
+        @media (max-width: 768px) { 
+            .modal { padding: 15px; } /* Less outer padding on mobile */
+            .modal-content { padding: 25px 20px; max-height: 85vh; } /* Tighter inner padding */
+            .modal-content h2 { font-size: 22px; margin-bottom: 15px; }
+            .close-btn { top: 15px; right: 15px; font-size: 28px; }
+            .modal-section h4 { font-size: 16px; margin-bottom: 10px; }
+            .modal-section ul { margin-left: 15px; font-size: 14px; }
+            .modal-section li { margin-bottom: 8px; }
+            .modal-section p { font-size: 14px; }
+            .ms-link { width: 100%; justify-content: center; } /* Full width button on mobile */
+        }
     </style>
 </head>
 <body>
@@ -148,12 +187,18 @@
 
     <nav>
         <a href="index.html" class="logo"><span>S</span> Sankalp</a>
-        <div class="nav-links">
+        
+        <button class="hamburger" id="hamburger-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="nav-links" id="nav-links">
             <a href="index.html" class="active-link">Home</a>
             <a href="experience.html">Experience</a>
             <a href="projects.html">Projects</a>
             <a href="contact.html">Contact</a>
         </div>
+        
         <button id="theme-toggle"><i class="fas fa-sun"></i></button>
     </nav>
 
@@ -239,8 +284,25 @@
     </div>
 
     <script>
+        // --- MOBILE HAMBURGER MENU LOGIC ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navLinksMenu = document.getElementById('nav-links');
+        const hamburgerIcon = hamburgerBtn.querySelector('i');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navLinksMenu.classList.toggle('active');
+            
+            // Switch icon between bars and X
+            if (navLinksMenu.classList.contains('active')) {
+                hamburgerIcon.classList.remove('fa-bars');
+                hamburgerIcon.classList.add('fa-times');
+            } else {
+                hamburgerIcon.classList.remove('fa-times');
+                hamburgerIcon.classList.add('fa-bars');
+            }
+        });
+
         // --- MODAL DATA & LOGIC ---
-        // Updated with the specific talking points requested earlier
         const trackData = {
             iam: {
                 title: "Cloud Identity (IAM)",
@@ -276,11 +338,19 @@
                 document.getElementById('modal-link').href = data.link;
                 
                 modal.style.display = "flex";
+                // Prevent background scrolling when modal is open on mobile
+                document.body.style.overflow = "hidden";
             });
         });
 
-        span.onclick = function() { modal.style.display = "none"; }
-        window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+        // Close modal logic
+        function closeModal() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Restore background scroll
+        }
+
+        span.onclick = closeModal;
+        window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
 
         // --- CUSTOM CURSOR LOGIC ---
         const dot = document.getElementById('cursor-dot');
@@ -296,7 +366,7 @@
                 outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 200, fill: "forwards" });
             });
 
-            document.querySelectorAll('a, button, .track-box, .close-btn').forEach(el => {
+            document.querySelectorAll('a, button, .track-box, .close-btn, .hamburger').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     outline.style.width = '60px';
                     outline.style.height = '60px';
@@ -329,7 +399,6 @@
         });
 
         // --- INITIATE 3D TILT CARDS ---
-        // Disable vanilla tilt on mobile/tablet devices
         if (window.matchMedia("(min-width: 1025px)").matches) {
             VanillaTilt.init(document.querySelectorAll(".track-box"));
         }
@@ -344,8 +413,7 @@
         renderer.setPixelRatio(window.devicePixelRatio);
 
         const geometry = new THREE.BufferGeometry();
-        // Reduce particles on smaller screens for performance
-        const particlesCount = window.innerWidth < 768 ? 400 : 800; 
+        const particlesCount = window.innerWidth < 768 ? 300 : 800; // Even fewer particles on mobile for better battery
         const posArray = new Float32Array(particlesCount * 3);
 
         for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
@@ -372,7 +440,6 @@
         function animate() {
             requestAnimationFrame(animate);
             particlesMesh.rotation.y += 0.0005; particlesMesh.rotation.x += 0.0002;
-            // Only apply mouse rotation if on desktop
             if (window.matchMedia("(pointer: fine)").matches) {
                 particlesMesh.rotation.y += mouseX * 0.005; particlesMesh.rotation.x += mouseY * 0.005;
             }
