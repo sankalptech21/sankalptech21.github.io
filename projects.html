@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sankalp Sinha | Projects & Interview Prep</title>
     
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -112,17 +112,10 @@
         .feedback-text.correct-text { color: var(--success); }
         .feedback-text.wrong-text { color: var(--error); }
         .next-btn { padding: 12px 25px; background: var(--accent-color); color: white; border: none; border-radius: 8px; font-weight: 600; transition: 0.3s; display: none; cursor: pointer; }
-        .next-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(145, 94, 255, 0.3); }
 
         .results-container { display: none; text-align: center; padding: 20px 0; }
         .score-circle { width: 140px; height: 140px; border-radius: 50%; border: 8px solid var(--accent-color); display: flex; justify-content: center; align-items: center; font-size: 36px; font-weight: 900; margin: 0 auto 25px auto; color: var(--accent-color); box-shadow: 0 0 20px rgba(145, 94, 255, 0.2); }
         .error-message { color: var(--error); font-weight: 500; margin-top: 15px; text-align: center; background: rgba(220, 53, 69, 0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(220, 53, 69, 0.2); line-height: 1.5; }
-
-        @media (max-width: 768px) {
-            .config-grid { grid-template-columns: 1fr; }
-            .projects-hero h1 { font-size: 32px; }
-            .prep-card { padding: 25px 20px; }
-        }
     </style>
 </head>
 <body>
@@ -140,12 +133,12 @@
             <a href="projects.html" class="active-link">Projects</a>
             <a href="contact.html">Contact</a>
         </div>
-        <button id="theme-toggle"><i class="fas fa-sun"></i></button>
+        <button id="theme-toggle"><i class="fa-solid fa-sun"></i></button>
     </nav>
 
     <section class="projects-hero">
         <h1>Enterprise Architecture & <br><span>Strategic Migrations</span></h1>
-        <p>I build high-performance systems that scale. Experience a professional technical assessment powered by our high-availability engine.</p>
+        <p>I build high-performance systems that scale. Experience a professional technical assessment powered by live AI.</p>
         <a href="contact.html" class="cta-btn">Let's Discuss <i class="fas fa-arrow-right"></i></a>
     </section>
 
@@ -153,46 +146,44 @@
         <div class="prep-card">
             <div class="prep-header">
                 <i class="fas fa-brain"></i>
-                <h2>AI Interview Simulator</h2>
-                <p>High-Availability Engine • Scenario-Based Learning</p>
+                <h2>Live AI Interview Simulator</h2>
+                <p>Generate fresh, unique technical assessments in real-time.</p>
             </div>
 
             <div class="search-box" id="config-ui">
                 <input type="text" id="tech-input" placeholder="Enter Technology (e.g., Azure, Intune, AWS, Python)">
                 <div class="config-grid">
                     <select id="level-select">
-                        <option value="L1 - Junior Support">Level: Junior (L1)</option>
-                        <option value="L2 - Systems Engineer" selected>Level: Engineer (L2)</option>
-                        <option value="L3 - Solutions Architect">Level: Architect (L3)</option>
+                        <option value="L1">Level: Junior (L1)</option>
+                        <option value="L2" selected>Level: Engineer (L2)</option>
+                        <option value="L3">Level: Architect (L3)</option>
                     </select>
                     <select id="type-select">
-                        <option value="Normal technical questions">Type: Normal</option>
+                        <option value="Direct technical knowledge">Type: Normal</option>
                         <option value="Scenario-based troubleshooting">Type: Scenario</option>
-                        <option value="Both normal and scenario-based" selected>Type: Mixed (Recommended)</option>
+                        <option value="Mix of technical and scenario-based" selected>Type: Mixed</option>
                     </select>
                     <select id="count-select">
                         <option value="5">5 Questions</option>
-                        <option value="10" selected>10 Questions</option>
-                        <option value="15">15 Questions</option>
-                        <option value="20">20 Questions</option>
-                        <option value="50">50 Questions (Challenge)</option>
+                        <option value="10">10 Questions</option>
+                        <option value="15" selected>15 Questions (Free Tier Limit)</option>
                     </select>
                 </div>
                 <div class="generate-row">
-                    <button id="generate-btn"><i class="fas fa-bolt"></i> Start Professional Assessment</button>
+                    <button id="generate-btn"><i class="fas fa-bolt"></i> Generate Live Assessment</button>
                 </div>
             </div>
 
             <div class="loader-container" id="loader">
                 <div class="spinner"></div>
-                <div class="loader-text" id="loader-text">Initializing high-availability engine...</div>
+                <div class="loader-text" id="loader-text">AI is curating fresh questions...</div>
                 <div id="error-msg" class="error-message" style="display:none"></div>
             </div>
 
             <div class="quiz-container" id="quiz-ui">
                 <div class="quiz-progress">
                     <span id="topic-display">Topic: </span>
-                    <span id="progress-display">Question 1 of 10</span>
+                    <span id="progress-display">Question 1 of 15</span>
                 </div>
                 <div class="question-text" id="question-text"></div>
                 <div class="options-list" id="options-list"></div>
@@ -211,7 +202,12 @@
     </section>
 
     <script>
-        const apiKey = ""; // API Key provided by the runtime environment
+        // =========================================================================
+        // ⚠️ CRITICAL: YOU MUST PASTE YOUR GOOGLE GEMINI API KEY INSIDE THE QUOTES
+        // If left as "YOUR_API_KEY_HERE", it will throw an "unregistered caller" error.
+        // =========================================================================
+        const apiKey = "AIzaSyD_rstNK0GorDu-icKxiwv8kQircpyG8VM"; 
+
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -234,28 +230,26 @@
         const feedbackText = document.getElementById('feedback-text');
         const nextBtn = document.getElementById('next-btn');
 
-        // Robust fetch with exponential backoff and better error parsing
-        async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
+        // Robust fetch with backoff for the Free Tier 15 RPM limit
+        async function fetchWithRetry(url, options, retries = 3, backoff = 2000) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, options);
                     if (response.ok) return await response.json();
                     
-                    // Handle rate limiting specifically
                     if (response.status === 429) {
-                        loaderText.innerText = `Traffic heavy. Retrying in ${backoff/1000}s...`;
+                        loaderText.innerText = `Free tier limit reached. Cooling down for ${backoff/1000}s...`;
                         await new Promise(resolve => setTimeout(resolve, backoff));
-                        backoff *= 1.5;
+                        backoff *= 2;
                         continue;
                     }
                     
-                    // Parse error body if available
                     const errData = await response.json().catch(() => ({}));
                     throw new Error(errData.error?.message || `API Status ${response.status}`);
                 } catch (err) {
                     if (i === retries - 1) throw err;
                     await new Promise(resolve => setTimeout(resolve, backoff));
-                    backoff *= 1.5;
+                    backoff *= 2;
                 }
             }
         }
@@ -272,23 +266,29 @@
                 return;
             }
 
+            if (apiKey === "YOUR_API_KEY_HERE" || !apiKey) {
+                errorMsg.style.display = "block";
+                errorMsg.innerHTML = `<strong>Missing API Key!</strong><br>You must edit the HTML file and place your Google Gemini API key on Line 268.`;
+                return;
+            }
+
             configUI.style.display = "none";
             errorMsg.style.display = "none";
             loader.style.display = "block";
             generateBtn.disabled = true;
             
-            loaderText.innerText = `Curating ${count} ${qType} questions for ${level}...`;
+            loaderText.innerText = `AI is generating ${count} fresh questions for ${topic}...`;
             
-            const systemPrompt = "You are a professional Enterprise Interviewer. Generate a high-quality technical assessment. " + 
-                               "The assessment should be rigorous and specific to the requested level and type. " +
+            const systemPrompt = "You are a professional Technical Interviewer. Generate a high-quality technical assessment. " + 
                                "Response MUST be a valid JSON object with a 'questions' key containing an array of objects. " + 
-                               "Each object: 'q' (string), 'options' (array of 4 strings), and 'answer' (integer 0-3).";
+                               "Each object: 'q' (string), 'options' (array of exactly 4 strings), and 'answer' (integer 0-3).";
             
             const userQuery = `Create a ${count}-question assessment on ${topic} for a ${level} candidate. ` + 
-                             `Style: ${qType}. Ensure the questions are technically accurate and diverse.`;
+                             `Style: ${qType}. Ensure questions are accurate and challenging.`;
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                // Using stable flash model
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const result = await fetchWithRetry(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -319,7 +319,7 @@
                 });
 
                 const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!rawText) throw new Error("Empty response from assessment engine.");
+                if (!rawText) throw new Error("Empty response from AI engine.");
                 
                 const data = JSON.parse(rawText);
                 currentQuestions = data.questions;
@@ -334,12 +334,17 @@
                 loadQuestion();
             } catch (error) {
                 console.error("Engine Error:", error);
-                const spinner = loader.querySelector('.spinner');
-                if (spinner) spinner.style.display = "none";
+                document.querySelector('.spinner').style.display = "none";
                 loaderText.innerText = "";
                 errorMsg.style.display = "block";
-                errorMsg.innerHTML = `<strong>Engine Busy or Connectivity Issue</strong><br>${error.message}<br><br>This can happen under heavy load. Please try a smaller batch or refresh in a moment.`;
-                generateBtn.disabled = false;
+                
+                // Friendly error parsing
+                let friendlyError = error.message;
+                if (friendlyError.includes("unregistered callers")) {
+                    friendlyError = "Your API key is invalid or restricted. Please check your Google Cloud Console.";
+                }
+
+                errorMsg.innerHTML = `<strong>Engine Busy or Connectivity Issue</strong><br>${friendlyError}<br><br><button onclick="resetQuiz()" class="cta-btn" style="padding: 8px 15px; font-size: 14px; margin-top:10px;">Try Again</button>`;
             }
         }
 
@@ -399,17 +404,35 @@
 
         function resetQuiz() {
             resultsUI.style.display = "none";
+            errorMsg.style.display = "none";
             configUI.style.display = "flex";
             generateBtn.disabled = false;
-            const spinner = loader.querySelector('.spinner');
-            if (spinner) spinner.style.display = "block";
+            document.querySelector('.spinner').style.display = "block";
             techInput.value = "";
             techInput.focus();
         }
 
         generateBtn.onclick = startQuizGeneration;
 
-        // Interactive Cursor
+        // --- THEME LOGIC (FIXED FOR SUN/MOON) ---
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeBtn.querySelector('i');
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+
+        themeBtn.onclick = () => {
+            const current = html.getAttribute('data-theme');
+            const target = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', target);
+            localStorage.setItem('theme', target);
+            themeIcon.className = target === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            if (typeof material !== 'undefined') material.color.setHex(target === 'dark' ? 0x915eff : 0x0078d4);
+        };
+
+        // --- CURSOR ---
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
         window.addEventListener('mousemove', (e) => {
@@ -417,34 +440,21 @@
             dot.style.top = outline.style.top = `${e.clientY}px`;
         });
 
-        // Theme Management
-        const html = document.documentElement;
-        const themeBtn = document.getElementById('theme-toggle');
-        themeBtn.onclick = () => {
-            const current = html.getAttribute('data-theme');
-            const target = current === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', target);
-            themeBtn.querySelector('i').className = target === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            if (material) material.color.setHex(target === 'dark' ? 0x915eff : 0x0078d4);
-        };
-
-        // 3D Visual Engine
+        // --- THREE.JS BACKGROUND ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true, antialias: true });
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         const geometry = new THREE.BufferGeometry();
-        const count = 800;
-        const pos = new Float32Array(count * 3);
-        for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5)*15;
+        const pos = new Float32Array(800 * 3);
+        for(let i=0; i<2400; i++) pos[i] = (Math.random()-0.5)*15;
         geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        const material = new THREE.PointsMaterial({ size: 0.015, color: 0x915eff, transparent: true, opacity: 0.6 });
+        const material = new THREE.PointsMaterial({ size: 0.015, color: savedTheme === 'dark' ? 0x915eff : 0x0078d4, transparent: true, opacity: 0.6 });
         const mesh = new THREE.Points(geometry, material);
         scene.add(mesh);
         camera.position.z = 3;
         function animate() { requestAnimationFrame(animate); mesh.rotation.y += 0.001; renderer.render(scene, camera); }
         animate();
-        window.onresize = () => { renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); };
     </script>
 </body>
 </html>
