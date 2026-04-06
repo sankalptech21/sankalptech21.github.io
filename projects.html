@@ -73,45 +73,56 @@
 
         /* --- INTERVIEW PREP --- */
         .interview-section { max-width: 900px; margin: 0 auto 100px auto; padding: 0 5%; }
-        .prep-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
+        .prep-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(10px); transition: transform 0.3s ease; }
         .prep-header { text-align: center; margin-bottom: 30px; }
         .prep-header i { font-size: 40px; color: var(--accent-color); margin-bottom: 15px; }
         .prep-header h2 { font-size: 28px; margin-bottom: 10px; }
         .prep-header p { color: var(--text-secondary); font-size: 15px; }
 
         .search-box { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .search-box input, .search-box select { width: 100%; padding: 15px 20px; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); border-radius: 12px; font-size: 16px; outline: none; transition: 0.3s; }
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .search-box input, .search-box select { width: 100%; padding: 15px 20px; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); border-radius: 12px; font-size: 16px; outline: none; transition: all 0.3s; }
+        .search-box select option { background: var(--bg-color); color: var(--text-color); }
         [data-theme="light"] select, [data-theme="light"] input { border: 1px solid rgba(0,0,0,0.1); }
-        .search-box input:focus, .search-box select:focus { border-color: var(--accent-color); }
+        .search-box input:focus, .search-box select:focus { border-color: var(--accent-color); box-shadow: 0 0 10px rgba(145, 94, 255, 0.2); }
         
         .generate-row { display: flex; justify-content: center; margin-top: 10px; }
-        .generate-row button { width: 100%; padding: 15px 25px; background: var(--accent-color); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;}
-        .generate-row button:hover { background: #7b4df0; transform: translateY(-2px); }
+        .generate-row button { width: 100%; padding: 15px 25px; background: var(--accent-color); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;}
+        .generate-row button:hover { background: #7b4df0; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(145, 94, 255, 0.4); }
+        .generate-row button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        .loader-container { display: none; text-align: center; padding: 40px 0; }
+        .loader-container { display: none; text-align: center; padding: 40px 0; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loader-text { color: var(--accent-color); font-weight: 500; font-family: monospace; font-size: 14px; }
 
-        .quiz-container { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
+        .quiz-container { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .quiz-progress { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: 14px; font-weight: 600; margin-bottom: 20px; }
-        .question-text { font-size: 18px; font-weight: 600; margin-bottom: 25px; line-height: 1.5; }
-        .options-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        .option-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 10px; color: var(--text-color); font-size: 15px; text-align: left; transition: 0.2s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .option-btn:hover { background: rgba(145, 94, 255, 0.1); border-color: var(--accent-color); }
-        .option-btn.correct { background: rgba(40, 167, 69, 0.2); border-color: var(--success); }
-        .option-btn.wrong { background: rgba(220, 53, 69, 0.2); border-color: var(--error); }
+        .question-text { font-size: 18px; font-weight: 600; margin-bottom: 25px; line-height: 1.5; color: var(--text-color); }
+        .options-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+        .option-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 16px 20px; border-radius: 12px; color: var(--text-color); font-size: 15px; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .option-btn:hover { background: rgba(145, 94, 255, 0.08); border-color: var(--accent-color); transform: translateX(5px); }
+        .option-btn.correct { background: rgba(40, 167, 69, 0.15); border-color: var(--success); color: #fff; }
+        .option-btn.wrong { background: rgba(220, 53, 69, 0.15); border-color: var(--error); color: #fff; }
         
-        .quiz-controls { display: flex; justify-content: space-between; align-items: center; }
+        .quiz-controls { display: flex; justify-content: space-between; align-items: center; min-height: 50px; }
         .feedback-text { font-weight: 600; font-size: 15px; display: none; }
         .feedback-text.correct-text { color: var(--success); }
         .feedback-text.wrong-text { color: var(--error); }
-        .next-btn { padding: 12px 25px; background: transparent; color: var(--text-color); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 600; transition: 0.3s; display: none; cursor: pointer; }
+        .next-btn { padding: 12px 25px; background: var(--accent-color); color: white; border: none; border-radius: 8px; font-weight: 600; transition: 0.3s; display: none; cursor: pointer; }
+        .next-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(145, 94, 255, 0.3); }
 
         .results-container { display: none; text-align: center; padding: 20px 0; }
-        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--accent-color); display: flex; justify-content: center; align-items: center; font-size: 32px; font-weight: 900; margin: 0 auto 20px auto; color: var(--accent-color); }
-        .error-message { color: var(--error); font-weight: 500; margin-top: 15px; text-align: center; background: rgba(220, 53, 69, 0.1); padding: 15px; border-radius: 10px; }
+        .score-circle { width: 140px; height: 140px; border-radius: 50%; border: 8px solid var(--accent-color); display: flex; justify-content: center; align-items: center; font-size: 36px; font-weight: 900; margin: 0 auto 25px auto; color: var(--accent-color); box-shadow: 0 0 20px rgba(145, 94, 255, 0.2); }
+        .error-message { color: var(--error); font-weight: 500; margin-top: 15px; text-align: center; background: rgba(220, 53, 69, 0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(220, 53, 69, 0.2); line-height: 1.5; }
+
+        @media (max-width: 768px) {
+            .config-grid { grid-template-columns: 1fr; }
+            .projects-hero h1 { font-size: 32px; }
+            .prep-card { padding: 25px 20px; }
+        }
     </style>
 </head>
 <body>
@@ -134,7 +145,7 @@
 
     <section class="projects-hero">
         <h1>Enterprise Architecture & <br><span>Strategic Migrations</span></h1>
-        <p>I have architected and delivered multiple large-scale enterprise projects. I build systems that scale.</p>
+        <p>I build high-performance systems that scale. Experience a professional technical assessment powered by our high-availability engine.</p>
         <a href="contact.html" class="cta-btn">Let's Discuss <i class="fas fa-arrow-right"></i></a>
     </section>
 
@@ -143,16 +154,21 @@
             <div class="prep-header">
                 <i class="fas fa-brain"></i>
                 <h2>AI Interview Simulator</h2>
-                <p>Advanced Scenario-Based Technical Assessments.</p>
+                <p>High-Availability Engine • Scenario-Based Learning</p>
             </div>
 
             <div class="search-box" id="config-ui">
-                <input type="text" id="tech-input" placeholder="Technology (e.g., Intune, Azure AD, PowerShell)">
-                <div class="config-row">
+                <input type="text" id="tech-input" placeholder="Enter Technology (e.g., Azure, Intune, AWS, Python)">
+                <div class="config-grid">
                     <select id="level-select">
-                        <option value="L1 - Entry Level Support">L1 Support (Basic)</option>
-                        <option value="L2 - Systems Administrator" selected>L2 Administrator (Intermediate)</option>
-                        <option value="L3 - Enterprise Architect">L3 Architect (Advanced)</option>
+                        <option value="L1 - Junior Support">Level: Junior (L1)</option>
+                        <option value="L2 - Systems Engineer" selected>Level: Engineer (L2)</option>
+                        <option value="L3 - Solutions Architect">Level: Architect (L3)</option>
+                    </select>
+                    <select id="type-select">
+                        <option value="Normal technical questions">Type: Normal</option>
+                        <option value="Scenario-based troubleshooting">Type: Scenario</option>
+                        <option value="Both normal and scenario-based" selected>Type: Mixed (Recommended)</option>
                     </select>
                     <select id="count-select">
                         <option value="5">5 Questions</option>
@@ -163,13 +179,13 @@
                     </select>
                 </div>
                 <div class="generate-row">
-                    <button id="generate-btn"><i class="fas fa-magic"></i> Start Assessment</button>
+                    <button id="generate-btn"><i class="fas fa-bolt"></i> Start Professional Assessment</button>
                 </div>
             </div>
 
             <div class="loader-container" id="loader">
                 <div class="spinner"></div>
-                <div class="loader-text" id="loader-text">Preparing your assessment...</div>
+                <div class="loader-text" id="loader-text">Initializing high-availability engine...</div>
                 <div id="error-msg" class="error-message" style="display:none"></div>
             </div>
 
@@ -182,7 +198,7 @@
                 <div class="options-list" id="options-list"></div>
                 <div class="quiz-controls">
                     <span class="feedback-text" id="feedback-text"></span>
-                    <button class="next-btn" id="next-btn">Next Question <i class="fas fa-chevron-right"></i></button>
+                    <button class="next-btn" id="next-btn">Continue <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
 
@@ -195,13 +211,14 @@
     </section>
 
     <script>
-        const apiKey = ""; // API Key provided by the environment
+        const apiKey = ""; // API Key provided by the runtime environment
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
 
         const techInput = document.getElementById('tech-input');
         const levelSelect = document.getElementById('level-select');
+        const typeSelect = document.getElementById('type-select');
         const countSelect = document.getElementById('count-select');
         const generateBtn = document.getElementById('generate-btn');
         const configUI = document.getElementById('config-ui');
@@ -217,21 +234,28 @@
         const feedbackText = document.getElementById('feedback-text');
         const nextBtn = document.getElementById('next-btn');
 
+        // Robust fetch with exponential backoff and better error parsing
         async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, options);
                     if (response.ok) return await response.json();
+                    
+                    // Handle rate limiting specifically
                     if (response.status === 429) {
+                        loaderText.innerText = `Traffic heavy. Retrying in ${backoff/1000}s...`;
                         await new Promise(resolve => setTimeout(resolve, backoff));
-                        backoff *= 2;
+                        backoff *= 1.5;
                         continue;
                     }
-                    throw new Error(`API Error: ${response.status}`);
+                    
+                    // Parse error body if available
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error?.message || `API Status ${response.status}`);
                 } catch (err) {
                     if (i === retries - 1) throw err;
                     await new Promise(resolve => setTimeout(resolve, backoff));
-                    backoff *= 2;
+                    backoff *= 1.5;
                 }
             }
         }
@@ -239,24 +263,29 @@
         async function startQuizGeneration() {
             const topic = techInput.value.trim();
             const level = levelSelect.value;
+            const qType = typeSelect.value;
             const count = countSelect.value;
             
-            if (!topic) return;
+            if (!topic) {
+                techInput.style.borderColor = "var(--error)";
+                setTimeout(() => techInput.style.borderColor = "", 2000);
+                return;
+            }
 
             configUI.style.display = "none";
-            quizUI.style.display = "none";
-            resultsUI.style.display = "none";
             errorMsg.style.display = "none";
             loader.style.display = "block";
-            loaderText.innerText = `AI is generating ${count} scenario questions for ${level}...`;
+            generateBtn.disabled = true;
             
-            const systemPrompt = "You are a Senior Technical Interviewer at a Fortune 500 company. Your task is to generate a professional technical assessment. " + 
-                               "Focus heavily on REAL-WORLD SCENARIOS, troubleshooting production issues, and architecture decisions. " +
-                               "Return ONLY a JSON object with a 'questions' key containing an array of objects. " + 
-                               "Each object must have 'q' (the question), 'options' (array of exactly 4 strings), and 'answer' (index 0, 1, 2, or 3).";
+            loaderText.innerText = `Curating ${count} ${qType} questions for ${level}...`;
             
-            const userQuery = `Generate a comprehensive ${count}-question multiple-choice assessment about ${topic} for a ${level} role. ` + 
-                             `Ensure at least 70% of the questions are scenario-based (e.g., 'A user reports...', 'You are migrating...', 'During a rollout...').`;
+            const systemPrompt = "You are a professional Enterprise Interviewer. Generate a high-quality technical assessment. " + 
+                               "The assessment should be rigorous and specific to the requested level and type. " +
+                               "Response MUST be a valid JSON object with a 'questions' key containing an array of objects. " + 
+                               "Each object: 'q' (string), 'options' (array of 4 strings), and 'answer' (integer 0-3).";
+            
+            const userQuery = `Create a ${count}-question assessment on ${topic} for a ${level} candidate. ` + 
+                             `Style: ${qType}. Ensure the questions are technically accurate and diverse.`;
 
             try {
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
@@ -290,31 +319,33 @@
                 });
 
                 const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!rawText) throw new Error("Empty response from assessment engine.");
+                
                 const data = JSON.parse(rawText);
                 currentQuestions = data.questions;
 
-                if (!Array.isArray(currentQuestions) || currentQuestions.length === 0) throw new Error("Invalid format");
+                if (!Array.isArray(currentQuestions) || currentQuestions.length === 0) throw new Error("Assessment format mismatch.");
 
                 currentQuestionIndex = 0;
                 score = 0;
                 loader.style.display = "none";
                 quizUI.style.display = "block";
-                topicDisplay.innerText = `Topic: ${topic} (${level})`;
+                topicDisplay.innerText = `${topic} • ${level}`;
                 loadQuestion();
             } catch (error) {
-                console.error(error);
-                loader.style.display = "block";
+                console.error("Engine Error:", error);
                 const spinner = loader.querySelector('.spinner');
                 if (spinner) spinner.style.display = "none";
                 loaderText.innerText = "";
                 errorMsg.style.display = "block";
-                errorMsg.innerText = "Assessment engine busy or requested too many questions. Please try a smaller batch or try again in a moment.";
+                errorMsg.innerHTML = `<strong>Engine Busy or Connectivity Issue</strong><br>${error.message}<br><br>This can happen under heavy load. Please try a smaller batch or refresh in a moment.`;
+                generateBtn.disabled = false;
             }
         }
 
         function loadQuestion() {
             const qData = currentQuestions[currentQuestionIndex];
-            progressDisplay.innerText = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+            progressDisplay.innerText = `Item ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
             questionText.innerText = qData.q;
             optionsList.innerHTML = "";
             feedbackText.style.display = "none";
@@ -323,7 +354,7 @@
             qData.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${opt}`;
+                btn.innerHTML = `<strong>${String.fromCharCode(65 + index)}</strong> ${opt}`;
                 btn.onclick = () => handleAnswer(index, btn, qData.answer);
                 optionsList.appendChild(btn);
             });
@@ -337,21 +368,24 @@
 
             if (selected === correct) {
                 btn.classList.add('correct');
-                feedbackText.innerText = "Correct! ✔️";
+                feedbackText.innerText = "Target hit! Valid technical reasoning. ✔️";
                 feedbackText.className = "feedback-text correct-text";
                 score++;
             } else {
                 btn.classList.add('wrong');
                 allBtns[correct].classList.add('correct');
-                feedbackText.innerText = "Incorrect ❌";
+                feedbackText.innerText = "Incorrect analysis. ❌";
                 feedbackText.className = "feedback-text wrong-text";
             }
         }
 
         nextBtn.onclick = () => {
             currentQuestionIndex++;
-            if (currentQuestionIndex < currentQuestions.length) loadQuestion();
-            else showResults();
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
         };
 
         function showResults() {
@@ -366,13 +400,16 @@
         function resetQuiz() {
             resultsUI.style.display = "none";
             configUI.style.display = "flex";
+            generateBtn.disabled = false;
+            const spinner = loader.querySelector('.spinner');
+            if (spinner) spinner.style.display = "block";
             techInput.value = "";
             techInput.focus();
         }
 
         generateBtn.onclick = startQuizGeneration;
 
-        // Cursor logic
+        // Interactive Cursor
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
         window.addEventListener('mousemove', (e) => {
@@ -380,7 +417,7 @@
             dot.style.top = outline.style.top = `${e.clientY}px`;
         });
 
-        // Theme Toggle
+        // Theme Management
         const html = document.documentElement;
         const themeBtn = document.getElementById('theme-toggle');
         themeBtn.onclick = () => {
@@ -391,10 +428,10 @@
             if (material) material.color.setHex(target === 'dark' ? 0x915eff : 0x0078d4);
         };
 
-        // 3D Background
+        // 3D Visual Engine
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         const geometry = new THREE.BufferGeometry();
         const count = 800;
