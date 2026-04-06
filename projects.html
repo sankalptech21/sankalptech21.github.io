@@ -21,6 +21,7 @@
             --nav-bg: rgba(5, 8, 22, 0.9);
             --success: #28a745;
             --error: #dc3545;
+            --input-bg: rgba(0, 0, 0, 0.3);
         }
 
         [data-theme="light"] {
@@ -30,12 +31,12 @@
             --accent-color: #0078d4; 
             --card-bg: rgba(255, 255, 255, 0.9);
             --nav-bg: rgba(255, 255, 255, 0.9);
+            --input-bg: rgba(255, 255, 255, 0.8);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background-color 0.3s, color 0.3s; cursor: none; }
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; min-height: 100vh; }
 
-        /* --- 3D CANVAS & CURSOR --- */
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
         .cursor-dot { width: 8px; height: 8px; background-color: var(--accent-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--accent-color); }
         .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--accent-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.15s, height 0.15s; }
@@ -61,7 +62,7 @@
             .nav-links.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
         }
 
-        /* --- PROJECTS HERO SECTION --- */
+        /* --- PROJECTS HERO --- */
         .projects-hero { padding: 150px 10% 80px 10%; text-align: center; max-width: 1000px; margin: 0 auto; }
         .projects-hero h1 { font-size: 45px; font-weight: 900; margin-bottom: 20px; line-height: 1.2; }
         .projects-hero h1 span { color: var(--accent-color); }
@@ -70,41 +71,35 @@
         .cta-btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; background: var(--accent-color); color: white; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; transition: 0.3s; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
         .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(145, 94, 255, 0.4); }
 
-        /* --- INTERVIEW PREP SECTION --- */
+        /* --- INTERVIEW PREP --- */
         .interview-section { max-width: 900px; margin: 0 auto 100px auto; padding: 0 5%; }
-        
         .prep-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
         .prep-header { text-align: center; margin-bottom: 30px; }
         .prep-header i { font-size: 40px; color: var(--accent-color); margin-bottom: 15px; }
         .prep-header h2 { font-size: 28px; margin-bottom: 10px; }
         .prep-header p { color: var(--text-secondary); font-size: 15px; }
 
-        /* Search Input */
-        .search-box { display: flex; gap: 15px; margin-bottom: 30px; }
-        .search-box input { flex-grow: 1; padding: 15px 20px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); border-radius: 12px; font-size: 16px; outline: none; font-family: 'Poppins', sans-serif; transition: 0.3s; }
-        [data-theme="light"] .search-box input { background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); }
-        .search-box input:focus { border-color: var(--accent-color); }
-        .search-box button { padding: 15px 25px; background: var(--accent-color); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; transition: 0.3s; display: flex; align-items: center; gap: 8px; cursor: pointer;}
-        .search-box button:hover { background: #7b4df0; transform: translateY(-2px); }
+        .search-box { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .search-box input, .search-box select { width: 100%; padding: 15px 20px; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); border-radius: 12px; font-size: 16px; outline: none; transition: 0.3s; }
+        [data-theme="light"] select, [data-theme="light"] input { border: 1px solid rgba(0,0,0,0.1); }
+        .search-box input:focus, .search-box select:focus { border-color: var(--accent-color); }
+        
+        .generate-row { display: flex; justify-content: center; margin-top: 10px; }
+        .generate-row button { width: 100%; padding: 15px 25px; background: var(--accent-color); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;}
+        .generate-row button:hover { background: #7b4df0; transform: translateY(-2px); }
 
-        /* Loading Animation */
         .loader-container { display: none; text-align: center; padding: 40px 0; }
         .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loader-text { color: var(--accent-color); font-weight: 500; font-family: monospace; font-size: 14px; }
 
-        /* Quiz UI */
         .quiz-container { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
         .quiz-progress { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: 14px; font-weight: 600; margin-bottom: 20px; }
-        
         .question-text { font-size: 18px; font-weight: 600; margin-bottom: 25px; line-height: 1.5; }
-        
         .options-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
         .option-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 10px; color: var(--text-color); font-size: 15px; text-align: left; transition: 0.2s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .option-btn:hover { background: rgba(145, 94, 255, 0.1); border-color: var(--accent-color); }
-        
-        /* Quiz States */
-        .option-btn.selected { background: rgba(145, 94, 255, 0.2); border-color: var(--accent-color); }
         .option-btn.correct { background: rgba(40, 167, 69, 0.2); border-color: var(--success); }
         .option-btn.wrong { background: rgba(220, 53, 69, 0.2); border-color: var(--error); }
         
@@ -112,30 +107,16 @@
         .feedback-text { font-weight: 600; font-size: 15px; display: none; }
         .feedback-text.correct-text { color: var(--success); }
         .feedback-text.wrong-text { color: var(--error); }
-        
         .next-btn { padding: 12px 25px; background: transparent; color: var(--text-color); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 600; transition: 0.3s; display: none; cursor: pointer; }
-        .next-btn:hover { background: rgba(255,255,255,0.05); }
 
-        /* Error UI */
-        .error-message { color: var(--error); font-weight: 500; margin-top: 15px; text-align: center; }
-
-        /* Quiz Results */
         .results-container { display: none; text-align: center; padding: 20px 0; }
         .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--accent-color); display: flex; justify-content: center; align-items: center; font-size: 32px; font-weight: 900; margin: 0 auto 20px auto; color: var(--accent-color); }
-
-        @media (max-width: 768px) {
-            .projects-hero { padding: 120px 5% 50px 5%; }
-            .projects-hero h1 { font-size: 32px; }
-            .prep-card { padding: 25px 20px; }
-            .search-box { flex-direction: column; }
-            .search-box button { justify-content: center; }
-        }
+        .error-message { color: var(--error); font-weight: 500; margin-top: 15px; text-align: center; background: rgba(220, 53, 69, 0.1); padding: 15px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <canvas id="bg-canvas"></canvas>
-
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
@@ -151,81 +132,82 @@
         <button id="theme-toggle"><i class="fas fa-sun"></i></button>
     </nav>
 
-    <!-- Projects Hero Section -->
     <section class="projects-hero">
         <h1>Enterprise Architecture & <br><span>Strategic Migrations</span></h1>
-        <p>I have architected and delivered multiple large-scale enterprise projects, focusing on legacy-to-cloud migrations, Microsoft 365 consolidations, zero-trust security rollouts, and advanced IT workflow automation. From migrating 30,000+ users into Entra ID to building self-healing endpoint scripts, I build systems that scale.</p>
-        <p style="margin-bottom: 40px; font-weight: 600; color: var(--text-color);">Have a specific infrastructure challenge or a new idea? Let's build it together.</p>
-        
-        <a href="contact.html" class="cta-btn">
-            Let's Discuss <i class="fas fa-arrow-right"></i>
-        </a>
+        <p>I have architected and delivered multiple large-scale enterprise projects. I build systems that scale.</p>
+        <a href="contact.html" class="cta-btn">Let's Discuss <i class="fas fa-arrow-right"></i></a>
     </section>
 
-    <!-- Interactive AI Interview Prep Section -->
     <section class="interview-section">
         <div class="prep-card">
             <div class="prep-header">
                 <i class="fas fa-brain"></i>
                 <h2>AI Interview Simulator</h2>
-                <p>Preparing for an IT interview? Enter a technology below (e.g., <strong>Intune</strong>, <strong>PowerShell</strong>, or <strong>Azure AD</strong>) to generate a comprehensive <strong>50-question</strong> technical multiple-choice quiz powered by Llama 3 AI.</p>
+                <p>Advanced Scenario-Based Technical Assessments.</p>
             </div>
 
-            <div class="search-box">
-                <input type="text" id="tech-input" placeholder="e.g., Microsoft Intune, PowerShell, Entra ID...">
-                <button id="generate-btn"><i class="fas fa-magic"></i> Generate Quiz</button>
+            <div class="search-box" id="config-ui">
+                <input type="text" id="tech-input" placeholder="Technology (e.g., Intune, Azure AD, PowerShell)">
+                <div class="config-row">
+                    <select id="level-select">
+                        <option value="L1 - Entry Level Support">L1 Support (Basic)</option>
+                        <option value="L2 - Systems Administrator" selected>L2 Administrator (Intermediate)</option>
+                        <option value="L3 - Enterprise Architect">L3 Architect (Advanced)</option>
+                    </select>
+                    <select id="count-select">
+                        <option value="5">5 Questions</option>
+                        <option value="10" selected>10 Questions</option>
+                        <option value="15">15 Questions</option>
+                        <option value="20">20 Questions</option>
+                        <option value="50">50 Questions (Challenge)</option>
+                    </select>
+                </div>
+                <div class="generate-row">
+                    <button id="generate-btn"><i class="fas fa-magic"></i> Start Assessment</button>
+                </div>
             </div>
 
-            <!-- Loading State -->
             <div class="loader-container" id="loader">
                 <div class="spinner"></div>
-                <div class="loader-text" id="loader-text">AI is generating 50 customized questions... This may take up to a minute.</div>
-                <div id="error-msg" class="error-message"></div>
+                <div class="loader-text" id="loader-text">Preparing your assessment...</div>
+                <div id="error-msg" class="error-message" style="display:none"></div>
             </div>
 
-            <!-- Quiz Interface -->
             <div class="quiz-container" id="quiz-ui">
                 <div class="quiz-progress">
-                    <span id="topic-display">Topic: Loading...</span>
-                    <span id="progress-display">Question 1 of X</span>
+                    <span id="topic-display">Topic: </span>
+                    <span id="progress-display">Question 1 of 10</span>
                 </div>
-                
-                <div class="question-text" id="question-text">Loading question...</div>
-                
-                <div class="options-list" id="options-list">
-                    <!-- Buttons injected via JS -->
-                </div>
-
+                <div class="question-text" id="question-text"></div>
+                <div class="options-list" id="options-list"></div>
                 <div class="quiz-controls">
-                    <span class="feedback-text" id="feedback-text">Correct!</span>
+                    <span class="feedback-text" id="feedback-text"></span>
                     <button class="next-btn" id="next-btn">Next Question <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
 
-            <!-- Final Results Interface -->
             <div class="results-container" id="results-ui">
                 <h2>Assessment Complete!</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">Here is your technical assessment score.</p>
                 <div class="score-circle" id="final-score">0/0</div>
-                <button class="cta-btn" onclick="resetQuiz()" style="margin-top: 10px;"><i class="fas fa-redo"></i> Try Another Topic</button>
+                <button class="cta-btn" onclick="resetQuiz()"><i class="fas fa-redo"></i> New Assessment</button>
             </div>
-
         </div>
     </section>
 
     <script>
-        // --- QUIZ STATE VARIABLES ---
+        const apiKey = ""; // API Key provided by the environment
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
 
-        // DOM Elements
         const techInput = document.getElementById('tech-input');
+        const levelSelect = document.getElementById('level-select');
+        const countSelect = document.getElementById('count-select');
         const generateBtn = document.getElementById('generate-btn');
+        const configUI = document.getElementById('config-ui');
         const loader = document.getElementById('loader');
         const loaderText = document.getElementById('loader-text');
         const errorMsg = document.getElementById('error-msg');
-        
         const quizUI = document.getElementById('quiz-ui');
         const resultsUI = document.getElementById('results-ui');
         const topicDisplay = document.getElementById('topic-display');
@@ -234,249 +216,198 @@
         const optionsList = document.getElementById('options-list');
         const feedbackText = document.getElementById('feedback-text');
         const nextBtn = document.getElementById('next-btn');
-        const finalScore = document.getElementById('final-score');
 
-        // Events
-        generateBtn.addEventListener('click', startQuizGeneration);
-        techInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') startQuizGeneration();
-        });
-
-        // ==========================================
-        // 🚀 LIVE AI API FETCH LOGIC
-        // ==========================================
-        async function startQuizGeneration() {
-            const topic = techInput.value.trim();
-            if (!topic) return;
-
-            // Reset UI states
-            quizUI.style.display = "none";
-            resultsUI.style.display = "none";
-            errorMsg.innerText = "";
-            loader.style.display = "block";
-            
-            // ---------------------------------------------------------
-            // ⚠️ CLOUDFLARE WORKER URL
-            // ---------------------------------------------------------
-            const workerURL = "https://sankalp.sinha-sankalp.workers.dev"; 
-
-            try {
-                // Fetch from the Cloudflare backend
-                const response = await fetch(workerURL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ topic: topic })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Server responded with status: ${response.status}`);
+        async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return await response.json();
+                    if (response.status === 429) {
+                        await new Promise(resolve => setTimeout(resolve, backoff));
+                        backoff *= 2;
+                        continue;
+                    }
+                    throw new Error(`API Error: ${response.status}`);
+                } catch (err) {
+                    if (i === retries - 1) throw err;
+                    await new Promise(resolve => setTimeout(resolve, backoff));
+                    backoff *= 2;
                 }
-
-                // Parse the clean JSON array sent back from Cloudflare
-                currentQuestions = await response.json(); 
-                
-                // Validate that we got an array back
-                if (!Array.isArray(currentQuestions) || currentQuestions.length === 0) {
-                    throw new Error("AI returned invalid format. Please try again.");
-                }
-
-                // Initialize Quiz
-                currentQuestionIndex = 0;
-                score = 0;
-                
-                loader.style.display = "none";
-                quizUI.style.display = "block";
-                topicDisplay.innerText = `Topic: ${topic}`;
-                
-                loadQuestion();
-
-            } catch (error) {
-                console.error("API Error:", error);
-                loader.querySelector('.spinner').style.display = "none";
-                loaderText.innerText = "";
-                errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Failed to generate quiz.<br>Error: ${error.message}<br>Make sure your Cloudflare Worker URL is correct in the HTML file.`;
             }
         }
 
-        // --- QUIZ RENDER LOGIC ---
+        async function startQuizGeneration() {
+            const topic = techInput.value.trim();
+            const level = levelSelect.value;
+            const count = countSelect.value;
+            
+            if (!topic) return;
+
+            configUI.style.display = "none";
+            quizUI.style.display = "none";
+            resultsUI.style.display = "none";
+            errorMsg.style.display = "none";
+            loader.style.display = "block";
+            loaderText.innerText = `AI is generating ${count} scenario questions for ${level}...`;
+            
+            const systemPrompt = "You are a Senior Technical Interviewer at a Fortune 500 company. Your task is to generate a professional technical assessment. " + 
+                               "Focus heavily on REAL-WORLD SCENARIOS, troubleshooting production issues, and architecture decisions. " +
+                               "Return ONLY a JSON object with a 'questions' key containing an array of objects. " + 
+                               "Each object must have 'q' (the question), 'options' (array of exactly 4 strings), and 'answer' (index 0, 1, 2, or 3).";
+            
+            const userQuery = `Generate a comprehensive ${count}-question multiple-choice assessment about ${topic} for a ${level} role. ` + 
+                             `Ensure at least 70% of the questions are scenario-based (e.g., 'A user reports...', 'You are migrating...', 'During a rollout...').`;
+
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const result = await fetchWithRetry(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "OBJECT",
+                                properties: {
+                                    questions: {
+                                        type: "ARRAY",
+                                        items: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                q: { type: "STRING" },
+                                                options: { type: "ARRAY", items: { type: "STRING" } },
+                                                answer: { type: "NUMBER" }
+                                            },
+                                            required: ["q", "options", "answer"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    })
+                });
+
+                const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                const data = JSON.parse(rawText);
+                currentQuestions = data.questions;
+
+                if (!Array.isArray(currentQuestions) || currentQuestions.length === 0) throw new Error("Invalid format");
+
+                currentQuestionIndex = 0;
+                score = 0;
+                loader.style.display = "none";
+                quizUI.style.display = "block";
+                topicDisplay.innerText = `Topic: ${topic} (${level})`;
+                loadQuestion();
+            } catch (error) {
+                console.error(error);
+                loader.style.display = "block";
+                const spinner = loader.querySelector('.spinner');
+                if (spinner) spinner.style.display = "none";
+                loaderText.innerText = "";
+                errorMsg.style.display = "block";
+                errorMsg.innerText = "Assessment engine busy or requested too many questions. Please try a smaller batch or try again in a moment.";
+            }
+        }
+
         function loadQuestion() {
             const qData = currentQuestions[currentQuestionIndex];
             progressDisplay.innerText = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
             questionText.innerText = qData.q;
-            
             optionsList.innerHTML = "";
             feedbackText.style.display = "none";
             nextBtn.style.display = "none";
 
-            // If AI messes up and options isn't an array, handle it gracefully
-            if(Array.isArray(qData.options)) {
-                qData.options.forEach((opt, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    const letter = String.fromCharCode(65 + index); // A, B, C, D
-                    btn.innerHTML = `<strong style="color:var(--accent-color);">${letter}.</strong> ${opt}`;
-                    
-                    // The answer index provided by AI
-                    const correctAnswerIndex = parseInt(qData.answer);
-                    
-                    btn.onclick = () => handleAnswer(index, btn, correctAnswerIndex);
-                    optionsList.appendChild(btn);
-                });
-            } else {
-                questionText.innerText = "Error: Question data malformed by AI. Please skip to next.";
-                nextBtn.style.display = "block";
-            }
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${opt}`;
+                btn.onclick = () => handleAnswer(index, btn, qData.answer);
+                optionsList.appendChild(btn);
+            });
         }
 
-        function handleAnswer(selectedIndex, btnElement, correctIndex) {
-            // Disable all buttons so they can't click twice
+        function handleAnswer(selected, btn, correct) {
             const allBtns = optionsList.querySelectorAll('.option-btn');
             allBtns.forEach(b => b.style.pointerEvents = 'none');
-
             feedbackText.style.display = "block";
             nextBtn.style.display = "block";
 
-            if (selectedIndex === correctIndex) {
-                btnElement.classList.add('correct');
+            if (selected === correct) {
+                btn.classList.add('correct');
                 feedbackText.innerText = "Correct! ✔️";
                 feedbackText.className = "feedback-text correct-text";
                 score++;
             } else {
-                btnElement.classList.add('wrong');
-                // Highlight actual correct answer if it exists within range
-                if(allBtns[correctIndex]) {
-                    allBtns[correctIndex].classList.add('correct'); 
-                }
+                btn.classList.add('wrong');
+                allBtns[correct].classList.add('correct');
                 feedbackText.innerText = "Incorrect ❌";
                 feedbackText.className = "feedback-text wrong-text";
             }
         }
 
-        nextBtn.addEventListener('click', () => {
+        nextBtn.onclick = () => {
             currentQuestionIndex++;
-            if (currentQuestionIndex < currentQuestions.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        });
+            if (currentQuestionIndex < currentQuestions.length) loadQuestion();
+            else showResults();
+        };
 
         function showResults() {
             quizUI.style.display = "none";
             resultsUI.style.display = "block";
-            finalScore.innerText = `${score}/${currentQuestions.length}`;
-            
-            // Color code the final score based on percentage
-            const percentage = score / currentQuestions.length;
-            if (percentage >= 0.8) finalScore.style.color = "var(--success)";
-            else if (percentage >= 0.5) finalScore.style.color = "var(--accent-color)";
-            else finalScore.style.color = "var(--error)";
+            const finalScoreEl = document.getElementById('final-score');
+            finalScoreEl.innerText = `${score}/${currentQuestions.length}`;
+            const perc = score / currentQuestions.length;
+            finalScoreEl.style.color = perc >= 0.8 ? "var(--success)" : perc >= 0.5 ? "var(--accent-color)" : "var(--error)";
         }
 
         function resetQuiz() {
             resultsUI.style.display = "none";
-            loader.querySelector('.spinner').style.display = "block";
-            loaderText.innerText = "AI is generating 50 customized questions... This may take up to a minute.";
-            errorMsg.innerText = "";
+            configUI.style.display = "flex";
             techInput.value = "";
             techInput.focus();
         }
 
-        // --- MOBILE HAMBURGER MENU LOGIC ---
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const navLinksMenu = document.getElementById('nav-links');
-        const hamburgerIcon = hamburgerBtn.querySelector('i');
+        generateBtn.onclick = startQuizGeneration;
 
-        hamburgerBtn.addEventListener('click', () => {
-            navLinksMenu.classList.toggle('active');
-            if (navLinksMenu.classList.contains('active')) {
-                hamburgerIcon.classList.remove('fa-bars');
-                hamburgerIcon.classList.add('fa-times');
-            } else {
-                hamburgerIcon.classList.remove('fa-times');
-                hamburgerIcon.classList.add('fa-bars');
-            }
-        });
-
-        // --- CUSTOM CURSOR LOGIC ---
+        // Cursor logic
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            dot.style.left = outline.style.left = `${e.clientX}px`;
+            dot.style.top = outline.style.top = `${e.clientY}px`;
+        });
 
-        if (window.matchMedia("(pointer: fine)").matches) {
-            window.addEventListener('mousemove', (e) => {
-                const posX = e.clientX;
-                const posY = e.clientY;
-                dot.style.left = `${posX}px`;
-                dot.style.top = `${posY}px`;
-                outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 200, fill: "forwards" });
-            });
+        // Theme Toggle
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.onclick = () => {
+            const current = html.getAttribute('data-theme');
+            const target = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', target);
+            themeBtn.querySelector('i').className = target === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            if (material) material.color.setHex(target === 'dark' ? 0x915eff : 0x0078d4);
+        };
 
-            const observer = new MutationObserver(() => {
-                document.querySelectorAll('a, button, input, .hamburger, .option-btn, .cta-btn').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        outline.style.width = '60px'; outline.style.height = '60px'; outline.style.backgroundColor = 'rgba(145, 94, 255, 0.1)';
-                    });
-                    el.addEventListener('mouseleave', () => {
-                        outline.style.width = '40px'; outline.style.height = '40px'; outline.style.backgroundColor = 'transparent';
-                    });
-                });
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-        }
-
-        // --- THEME PERSISTENCE & 3D BACKGROUND ---
-        const htmlElement = document.documentElement;
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = themeToggle.querySelector('i');
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        
-        htmlElement.setAttribute('data-theme', savedTheme);
-        themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-
-        const canvas = document.getElementById('bg-canvas');
+        // 3D Background
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-
         const geometry = new THREE.BufferGeometry();
-        const particlesCount = window.innerWidth < 768 ? 300 : 800; 
-        const posArray = new Float32Array(particlesCount * 3);
-        for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
-        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-        let material = new THREE.PointsMaterial({
-            size: 0.015, color: savedTheme === 'dark' ? 0x915eff : 0x0078d4, transparent: true, opacity: 0.6
-        });
-
-        const particlesMesh = new THREE.Points(geometry, material);
-        scene.add(particlesMesh);
+        const count = 800;
+        const pos = new Float32Array(count * 3);
+        for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5)*15;
+        geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const material = new THREE.PointsMaterial({ size: 0.015, color: 0x915eff, transparent: true, opacity: 0.6 });
+        const mesh = new THREE.Points(geometry, material);
+        scene.add(mesh);
         camera.position.z = 3;
-
-        themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            material.color.setHex(newTheme === 'dark' ? 0x915eff : 0x0078d4); 
-        });
-
-        let mouseX = 0; let mouseY = 0;
-        document.addEventListener('mousemove', (e) => { mouseX = e.clientX / window.innerWidth - 0.5; mouseY = e.clientY / window.innerHeight - 0.5; });
-
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.y += 0.0005; particlesMesh.rotation.x += 0.0002;
-            if (window.matchMedia("(pointer: fine)").matches) { particlesMesh.rotation.y += mouseX * 0.005; particlesMesh.rotation.x += mouseY * 0.005; }
-            renderer.render(scene, camera);
-        }
+        function animate() { requestAnimationFrame(animate); mesh.rotation.y += 0.001; renderer.render(scene, camera); }
         animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        window.onresize = () => { renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); };
     </script>
 </body>
 </html>
